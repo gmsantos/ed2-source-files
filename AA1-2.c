@@ -60,7 +60,7 @@ int main()
     int n;
     clock_t start;
 
-    printf("Entre com o termo da sequencia desejado:");
+    printf("Entre com o termo da sequencia desejado: ");
     scanf("%d", &n);
 
     // Executa a abordagem iterativa e mede seu tempo de execução
