@@ -22,25 +22,25 @@ Arvore *busca(Arvore *node, char nome[])
 {
     if (node == NULL)
     {
-        printf("\n\nPesquisador não foi encontrado.");
+        printf("\n > Pesquisador não foi encontrado.\n");
 
         return node;
     }
 
-    if (strcmp(node->nome, nome) == 0)
+    if (strcmp(nome, node->nome) == 0)
     {
-        printf("\nPesquisador encontrado:\n");
+        printf("\n > Pesquisador encontrado:\n");
         exibirPesquisador(node);
 
         return node;
     }
 
-    if (strcasecmp(node->nome, nome) > 0)
+    if (strcasecmp(nome, node->nome) < 0)
     {
         return busca(node->esq, nome);
     }
 
-    if (strcasecmp(node->nome, nome) < 0)
+    if (strcasecmp(nome, node->nome) > 0)
     {
         return busca(node->dir, nome);
     }
@@ -53,16 +53,38 @@ Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[])
         return criar(nome, email, instituicao);
     }
 
-    if (strcasecmp(node->nome, nome) > 0)
+    if (strcasecmp(nome, node->nome) < 0)
     {
         node->esq = inserir(node->esq, nome, email, instituicao);
+
+        return node;
     }
-    else if (strcasecmp(node->nome, nome) < 0)
+    
+    if (strcasecmp(nome, node->nome) > 0)
     {
         node->dir = inserir(node->dir, nome, email, instituicao);
+
+        return node;
     }
 
+    printf("\n > Esse pesquisador já existe na rede. Nenhuma alteração foi efetuada.");
+
     return node;
+}
+
+void alterarPesquisador(Arvore* pesquisador, char email[], char instituicao[])
+{
+    if (pesquisador == NULL) // Essa condição só é verdadeira caso tente alterar um pesquisador nulo
+    {
+        printf("\n > Informe um pesquisador presente na rede antes de tentar alterá-lo.");
+        return;
+    }
+    
+    strcpy(pesquisador->email, email);
+    strcpy(pesquisador->instituicao, instituicao);
+
+    printf("\n > Dados alterados com sucesso!");
+    exibirPesquisador(pesquisador);
 }
 
 void exibirPesquisador(Arvore *pesquisador)
@@ -71,53 +93,7 @@ void exibirPesquisador(Arvore *pesquisador)
     printf("\nEmail: %s", pesquisador->email);
     printf("\nInstituição: %s", pesquisador->instituicao);
     //printf("\nPublicações: %s", pesquisador->publicoes);
-}
-
-void altera(Arvore **raiz, char *nome)
-{
-    if ((*raiz) != NULL)
-    {
-        if (strcasecmp((*raiz)->nome, nome) > 0)
-        {
-            altera(&(*raiz)->esq, nome);
-        }
-        else
-        {
-            if (strcasecmp((*raiz)->nome, nome) < 0)
-            {
-                altera(&(*raiz)->dir, nome);
-            }
-            else
-            {
-                if (strcmp((*raiz)->nome, nome) == 0)
-                {
-                    char email[60];
-                    char instituicao[50];
-                    char publicoes[100];
-                    printf("REGISTRO ENCONTRADO!!\n");
-                    printf("\n\nPesquisador: %s", (*raiz)->nome);
-                    printf("\nNovo E-Mail: ");
-                    scanf("%s", email);
-                    printf("\nNova Instituição: ");
-                    scanf("%s", instituicao);
-                    printf("\nNovas Publicações: ");
-                    scanf("%s", publicoes);
-
-                    strcpy((*raiz)->email, email);
-                    strcpy((*raiz)->instituicao, instituicao);
-                    strcpy((*raiz)->publicoes, publicoes);
-
-                    printf("| Dados alterados!! |\n");
-                    getchar();
-                }
-            }
-        }
-    }
-    else
-    {
-        printf("| nome não encontrado!! |\n");
-        getchar();
-    }
+    printf("\n");
 }
 
 void excluir(Arvore **raiz, char nome[])
@@ -170,14 +146,13 @@ void excluir(Arvore **raiz, char nome[])
     }
 }
 
-void ordem(Arvore *raiz)
+void listarEmOrdem(Arvore* raiz)
 {
     if (raiz != NULL)
     {
-        ordem(raiz->esq);
-        exibirPesquisador(raiz);
-        printf("\n");
-        ordem(raiz->dir);
+        listarEmOrdem(raiz->esq);
+        exibirPesquisador(raiz);        
+        listarEmOrdem(raiz->dir);
     }
 }
 

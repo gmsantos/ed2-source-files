@@ -26,12 +26,12 @@ void ler_public(char public[]);
 
 void menu(int *acao)
 {
-    printf("\n\nCADASTRO DE PESQUISADORES\n");
-    printf("1 - Inserir novo pesquisador\n");
-    printf("2 - Consulta de pesquisador\n");
-    printf("3 - Altera dados de pesquisador da rede\n");
-    printf("4 - Remove pesquisadores da rede\n");
-    printf("5 - Imprime pesquisadores\n");
+    printf("\nCADASTRO DE PESQUISADORES\n");
+    printf("1 - Inserção de novos pesquisadores na rede\n");
+    printf("2 - Consulta de pesquisador da rede\n");
+    printf("3 - Alteração dos dados de pesquisador da rede\n");
+    printf("4 - Remoção de pesquisadores da rede\n");
+    printf("5 - Listar os pesquisadores da rede em ordem\n");
     printf("6 - Sair do programa\n");
 
     printf("\nDigite uma opção: ");
@@ -41,7 +41,7 @@ void menu(int *acao)
 
 void opcao(char op[])
 {
-    printf("\n\nDeseja continuar sim: s ou não: n\n");
+    printf("\nDeseja continuar sim: s ou não: n\n");
     scanf("%s", op);
     getchar();
 }
@@ -51,6 +51,7 @@ int main()
     int acao;
     char nome[90], email[60], instituicao[50];
 
+    printf("Inserindo pesquisadores iniciais na rede...\n");
     Arvore *raiz = NULL;
     raiz = inserir(raiz, "Marcos Teixeira", "teixeira@gmail.com", "UFSCar");
     inserir(raiz, "Flávio Mendes", "fm@ufrj.br", "UFRJ");
@@ -62,35 +63,46 @@ int main()
         switch (acao)
         {
         case 1:
-            printf("\n\nInserir novo pesquisador");
+            printf("\nINSERIR UM NOVO PESQUISADOR");
             ler_nome(nome);
             ler_email(email);
             ler_instituicao(instituicao);
             inserir(raiz, nome, email, instituicao);
+
             break;
 
         case 2:
-            printf("\n\nPesquisar um pesquisador");
+            printf("\nCONSULTAR UM PESQUISADOR");
             ler_nome(nome);
             busca(raiz, nome);
             break;
 
         case 3:
-            printf("\n\nAlterar pequisador");
+            printf("\nALTERAR UM PEQUISADOR");
             ler_nome(nome);
-            altera(&raiz, nome);
+            Arvore *pesquisador = busca(raiz, nome);
+
+            if (pesquisador == NULL) // Verificar se o pesquisador está na rede
+            {
+                break; // Encerra a ação caso aquele pesquisador não esteja na rede
+            }
+
+            printf("\nInsira os novos dados para esse pesquisador");
+            ler_email(email);
+            ler_instituicao(instituicao);
+            alterarPesquisador(pesquisador, email, instituicao);
+
             break;
 
         case 4:
-            printf("\n\nRemover pesquisador");
+            printf("\nREMOVER PESQUISADOR");
             ler_nome(nome);
             excluir(&raiz, nome);
             break;
 
         case 5:
-            printf("\n\nExibir pesquisadores em ordem");
-            ordem(raiz);
-            getchar();
+            printf("\nLISTAR OS PESQUISADORES DA REDE EM ORDEM");
+            listarEmOrdem(raiz);
             break;
         }
     }
@@ -119,8 +131,7 @@ void ler_instituicao(char instituicao[])
 
 void ler_publicacoes(char publicacoes[])
 {
-    printf("\nDigite as publicações: ");
+    printf("Digite as publicações: ");
     fgets(publicacoes, 100, stdin);
     publicacoes[strcspn(publicacoes, "\r\n")] = 0;
 }
-
