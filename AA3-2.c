@@ -97,7 +97,7 @@ int main()
         case 4:
             printf("\nREMOVER PESQUISADOR");
             ler_nome(nome);
-            excluir(&raiz, nome);
+            raiz = excluir(raiz, nome);
             break;
 
         case 5:
