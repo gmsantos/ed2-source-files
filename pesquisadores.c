@@ -4,8 +4,8 @@
 
 #include "pesquisadores.h"
 
-struct pesquisador* criar(char nome[], char email[], char instituicao[], Lista *publicacoes);
-Arvore* menorNode(Arvore *node);
+struct pesquisador *criar(char nome[], char email[], char instituicao[], Lista *publicacoes);
+Arvore *menorNode(Arvore *node);
 void exibirPesquisador(struct pesquisador *pesquisador);
 
 Arvore *busca(Arvore *node, char nome[])
@@ -37,7 +37,7 @@ Arvore *busca(Arvore *node, char nome[])
 }
 
 <<<<<<< HEAD
-Arvore* inserir(Arvore *node, char nome[], char email[], char instituicao[], Lista *publicacoes)
+Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lista *publicacoes)
 =======
 Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[])
 >>>>>>> format code
@@ -147,7 +147,7 @@ void alterarPesquisador(struct pesquisador *pesquisador, char email[], char inst
 }
 
 <<<<<<< HEAD
-struct pesquisador* criar(char nome[], char email[], char instituicao[], Lista *publicacoes)
+struct pesquisador *criar(char nome[], char email[], char instituicao[], Lista *publicacoes)
 =======
 struct pesquisador *criar(char nome[], char email[], char instituicao[])
 >>>>>>> format code

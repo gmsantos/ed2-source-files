@@ -59,7 +59,7 @@ int main()
             ler_email(email);
             ler_instituicao(instituicao);
             publicacoes = ler_publicacoes();
-            
+
             if (raiz == NULL) // Caso todos os nós forem apagados, recria a raiz da arvore
             {
                 raiz = inserir(raiz, nome, email, instituicao, publicacoes);
@@ -67,7 +67,7 @@ int main()
             else
             {
                 inserir(raiz, nome, email, instituicao, publicacoes);
-            }            
+            }
 
             break;
 
@@ -177,7 +177,7 @@ Lista *ler_publicacoes()
 
     // Loop para inserir as publicações do pesquisador
     // aceita os inputs de S ou N para inserir mais publicações ou prosseguir
-    do 
+    do
     {
         printf("\nDeseja incluir uma nova publicação para esse pesquisador? ([S]im/[N]ão) : ");
         scanf("%s", confirma);
