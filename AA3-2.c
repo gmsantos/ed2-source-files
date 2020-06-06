@@ -23,21 +23,6 @@ void ler_email(char email[]);
 void ler_instituicao(char instituicao[]);
 void ler_public(char public[]);
 
-void menu(int *acao)
-{
-    printf("\nCADASTRO DE PESQUISADORES\n");
-    printf("1 - Inserção de novos pesquisadores na rede\n");
-    printf("2 - Consulta de pesquisador da rede\n");
-    printf("3 - Alteração dos dados de pesquisador da rede\n");
-    printf("4 - Remoção de pesquisadores da rede\n");
-    printf("5 - Listar os pesquisadores da rede em ordem\n");
-    printf("6 - Sair do programa\n");
-
-    printf("\nDigite uma opção: ");
-    scanf("%d", acao);
-    getchar();
-}
-
 int main()
 {
     int acao;
@@ -99,10 +84,25 @@ int main()
         case 5:
             printf("\nLISTAR OS PESQUISADORES DA REDE EM ORDEM");
             listarEmOrdem(raiz);
-            
+
             break;
         }
     }
+}
+
+void menu(int *acao)
+{
+    printf("\nCADASTRO DE PESQUISADORES\n");
+    printf("1 - Inserção de novos pesquisadores na rede\n");
+    printf("2 - Consulta de pesquisador da rede\n");
+    printf("3 - Alteração dos dados de pesquisador da rede\n");
+    printf("4 - Remoção de pesquisadores da rede\n");
+    printf("5 - Listar os pesquisadores da rede em ordem\n");
+    printf("6 - Sair do programa\n");
+
+    printf("\nDigite uma opção: ");
+    scanf("%d", acao);
+    getchar();
 }
 
 void ler_nome(char nome[])
