@@ -165,32 +165,38 @@ Lista *ler_publicacoes()
     char titulo[90], editora[50], confirma[1];
     int ano;
     Lista *lista = NULL;
-    Lista *anterior = lista;
+    Lista *anterior = NULL;
 
-    do
+    // Loop para inserir as publicações do pesquisador
+    // aceita os inputs de S ou N para inserir mais publicações ou prosseguir
+    do 
     {
         printf("\nDeseja incluir uma nova publicação para esse pesquisador? ([S]im/[N]ão) : ");
         scanf("%s", confirma);
         getchar();
 
-        if (strcasecmp(confirma, "s") == 0)
+        if (strcasecmp(confirma, "s") == 0) // Lê os dados da publicação
         {
             ler_titulo(titulo);
             ler_ano(&ano);
             ler_editora(editora);
 
-            if (lista == NULL)
+            if (lista == NULL) // inicializa o primeiro elemento da lista
             {
                 lista = novaPublicacao(titulo, ano, editora, NULL);
+
+                // mantém a referencia anterior para definir o pointer da proxima publicação
                 anterior = lista;
             }
             else
             {
-                Lista *proxima = novaPublicacao(titulo, ano, editora, anterior);
-                anterior = proxima;
+                Lista *nova = novaPublicacao(titulo, ano, editora, anterior);
+
+                // mantém a referencia anterior para o ultimo elemento da lista
+                anterior = nova;
             }
         }
-    } while (strcasecmp(confirma, "n") != 0);
+    } while (strcasecmp(confirma, "n") != 0); // Se mantem no se input for diferente de N
 
-    return lista;
+    return lista; // O primeiro elemento da lista ligada ou NULL é retornado
 }
