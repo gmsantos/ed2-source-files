@@ -36,11 +36,7 @@ Arvore *busca(Arvore *node, char nome[])
     }
 }
 
-<<<<<<< HEAD
 Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lista *publicacoes)
-=======
-Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[])
->>>>>>> format code
 {
     if (node == NULL)
     {
@@ -146,11 +142,7 @@ void alterarPesquisador(struct pesquisador *pesquisador, char email[], char inst
     exibirPesquisador(pesquisador);
 }
 
-<<<<<<< HEAD
 struct pesquisador *criar(char nome[], char email[], char instituicao[], Lista *publicacoes)
-=======
-struct pesquisador *criar(char nome[], char email[], char instituicao[])
->>>>>>> format code
 {
     Arvore *temp = malloc(sizeof(Arvore));
     strcpy(temp->nome, nome);
