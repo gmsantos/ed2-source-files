@@ -119,6 +119,7 @@ Arvore* excluir(Arvore *node, char nome[])
     strcpy(node->nome, tempNode->nome);
     strcpy(node->email, tempNode->email);
     strcpy(node->instituicao, tempNode->instituicao);
+    node->publicacoes = tempNode->publicacoes;
 
     // Remove o proximo nó na ordem (que está duplicado)
     node->dir = excluir(node->dir, tempNode->nome);

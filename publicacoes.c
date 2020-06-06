@@ -4,7 +4,7 @@
 
 #include "publicacoes.h"
 
-Lista *novaPubicacao(char titulo[], int ano, char editora[], Lista *anterior)
+Lista *novaPublicacao(char titulo[], int ano, char editora[], Lista *anterior)
 {
     Lista *novo = malloc(sizeof(Lista));
 

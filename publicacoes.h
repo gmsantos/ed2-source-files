@@ -11,7 +11,7 @@ struct publicacao
 
 typedef struct publicacao Lista;
 
-Lista *novaPubicacao(char titulo[], int ano, char editora[], Lista *anterior);
+Lista *novaPublicacao(char titulo[], int ano, char editora[], Lista *anterior);
 void exibirPublicacoes(Lista *publicacoes);
 
 #endif

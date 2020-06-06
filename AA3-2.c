@@ -21,25 +21,27 @@ void menu(int *acao);
 void ler_nome(char nome[]);
 void ler_email(char email[]);
 void ler_instituicao(char instituicao[]);
+Lista *ler_publicacoes();
 
-void ler_publicacao(char public[]);
-void ler_publicacao(char public[]);
-void ler_publicacao(char public[]);
+void ler_titulo(char titulo[]);
+void ler_ano(int *ano);
+void ler_editora(char editora[]);
 
 int main()
 {
     int acao;
     char nome[90], email[60], instituicao[50];
+    Lista *publicacoes;
 
     printf("Inserindo pesquisadores iniciais na rede...\n");
     Arvore *raiz = NULL;
 
     // Cria as listas de publicações
-    Lista *publicacoesMarcos = novaPubicacao("Árvores e suas Aplicações", 2011, "Makron Books", NULL);
-    Lista *publicacoesMarcos2 = novaPubicacao("Estruturas de Dados em Disco", 2008, "Campus", publicacoesMarcos);
-    Lista *publicacoesFlavio = novaPubicacao("Aspectos Formais", 1991, "Elsevier", NULL);
-    Lista *publicacoesFlavio2 = novaPubicacao("Autômatos", 1994, "ETC", publicacoesFlavio);
-    Lista *publicacoesOdair = novaPubicacao("Lógica de Programação", 2002, "Elsevier", NULL);
+    Lista *publicacoesMarcos = novaPublicacao("Árvores e suas Aplicações", 2011, "Makron Books", NULL);
+    Lista *publicacoesMarcos2 = novaPublicacao("Estruturas de Dados em Disco", 2008, "Campus", publicacoesMarcos);
+    Lista *publicacoesFlavio = novaPublicacao("Aspectos Formais", 1991, "Elsevier", NULL);
+    Lista *publicacoesFlavio2 = novaPublicacao("Autômatos", 1994, "ETC", publicacoesFlavio);
+    Lista *publicacoesOdair = novaPublicacao("Lógica de Programação", 2002, "Elsevier", NULL);
 
     // Cria a raiz da árvore
     raiz = inserir(raiz, "Marcos Teixeira", "teixeira@gmail.com", "UFSCar", publicacoesMarcos);
@@ -56,7 +58,8 @@ int main()
             ler_nome(nome);
             ler_email(email);
             ler_instituicao(instituicao);
-            inserir(raiz, nome, email, instituicao, NULL);
+            publicacoes = ler_publicacoes();
+            inserir(raiz, nome, email, instituicao, publicacoes);
 
             break;
 
@@ -77,7 +80,7 @@ int main()
                 break; // Encerra a ação caso aquele pesquisador não esteja na rede
             }
 
-            printf("\nInsira os novos dados para esse pesquisador");
+            printf("\n > Insira os novos dados para esse pesquisador\n");
             ler_email(email);
             ler_instituicao(instituicao);
             alterarPesquisador(pesquisador, email, instituicao);
@@ -136,9 +139,58 @@ void ler_instituicao(char instituicao[])
     instituicao[strcspn(instituicao, "\r\n")] = 0;
 }
 
-void ler_publicacoes(char publicacoes[])
+void ler_titulo(char titulo[])
 {
-    printf("Digite as publicações: ");
-    fgets(publicacoes, 100, stdin);
-    publicacoes[strcspn(publicacoes, "\r\n")] = 0;
+    printf("\nDigite o titulo: ");
+    fgets(titulo, 90, stdin);
+    titulo[strcspn(titulo, "\r\n")] = 0;
+}
+
+void ler_ano(int *ano)
+{
+    printf("Digite o ano: ");
+    scanf("%d", ano);
+    getchar();
+}
+
+void ler_editora(char editora[])
+{
+    printf("Digite a editora: ");
+    fgets(editora, 50, stdin);
+    editora[strcspn(editora, "\r\n")] = 0;
+}
+
+Lista *ler_publicacoes()
+{
+    char titulo[90], editora[50], confirma[1];
+    int ano;
+    Lista *lista = NULL;
+    Lista *anterior = lista;
+
+    do
+    {
+        printf("\nDeseja incluir uma nova publicação para esse pesquisador? ([S]im/[N]ão) : ");
+        scanf("%s", confirma);
+        getchar();
+
+        if (strcasecmp(confirma, "s") == 0)
+        {
+            ler_titulo(titulo);
+            ler_ano(&ano);
+            ler_editora(editora);
+
+            if (lista == NULL)
+            {
+                lista = novaPublicacao(titulo, ano, editora, NULL);
+                anterior = lista;
+            }
+            else
+            {
+                Lista *proxima = novaPublicacao(titulo, ano, editora, anterior);
+                anterior = proxima;
+            }
+        }
+    } while (strcasecmp(confirma, "n") != 0);
+
+    return lista;
 }
