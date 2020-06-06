@@ -8,7 +8,7 @@ struct pesquisador* criar(char nome[], char email[], char instituicao[], Lista *
 Arvore* menorNode(Arvore *node);
 void exibirPesquisador(struct pesquisador *pesquisador);
 
-Arvore* busca(Arvore *node, char nome[])
+Arvore *busca(Arvore *node, char nome[])
 {
     if (node == NULL)
     {
@@ -36,7 +36,11 @@ Arvore* busca(Arvore *node, char nome[])
     }
 }
 
+<<<<<<< HEAD
 Arvore* inserir(Arvore *node, char nome[], char email[], char instituicao[], Lista *publicacoes)
+=======
+Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[])
+>>>>>>> format code
 {
     if (node == NULL)
     {
@@ -62,12 +66,12 @@ Arvore* inserir(Arvore *node, char nome[], char email[], char instituicao[], Lis
     return node;
 }
 
-Arvore* excluir(Arvore *node, char nome[])
+Arvore *excluir(Arvore *node, char nome[])
 {
     Arvore *tempNode = NULL;
 
     if (node == NULL) // definição de parada da recursão
-    { 
+    {
         return node;
     }
 
@@ -80,7 +84,7 @@ Arvore* excluir(Arvore *node, char nome[])
 
     if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome é maior que o nó atual e procura a direita da árvore
     {
-        node->dir =excluir(node->dir, nome);
+        node->dir = excluir(node->dir, nome);
 
         return node;
     }
@@ -142,7 +146,11 @@ void alterarPesquisador(struct pesquisador *pesquisador, char email[], char inst
     exibirPesquisador(pesquisador);
 }
 
+<<<<<<< HEAD
 struct pesquisador* criar(char nome[], char email[], char instituicao[], Lista *publicacoes)
+=======
+struct pesquisador *criar(char nome[], char email[], char instituicao[])
+>>>>>>> format code
 {
     Arvore *temp = malloc(sizeof(Arvore));
     strcpy(temp->nome, nome);
@@ -179,15 +187,15 @@ void exibirPesquisador(struct pesquisador *pesquisador)
     printf("\n");
 }
 
-Arvore* menorNode(Arvore *node) 
-{ 
-    Arvore* nodeAtual = node; 
-  
+Arvore *menorNode(Arvore *node)
+{
+    Arvore *nodeAtual = node;
+
     // Procura o nó mais a esquerda o possível
     while (nodeAtual && nodeAtual->esq != NULL)
     {
         nodeAtual = nodeAtual->esq;
     }
-  
-    return nodeAtual; 
+
+    return nodeAtual;
 }
