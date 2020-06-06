@@ -7,7 +7,7 @@
 
 Arvore* criar(char nome[], char email[], char instituicao[])
 {
-    Arvore *temp = (Arvore *)malloc(sizeof(Arvore));
+    Arvore *temp = malloc(sizeof(Arvore));
     strcpy(temp->nome, nome);
     strcpy(temp->email, email);
     strcpy(temp->instituicao, instituicao);
@@ -74,7 +74,7 @@ Arvore* inserir(Arvore *node, char nome[], char email[], char instituicao[])
 
 Arvore* excluir(Arvore *node, char nome[])
 {
-    Arvore *tempNode;
+    Arvore *tempNode = NULL;
 
     if (node == NULL) // definição de parada da recursão
     { 
@@ -83,13 +83,15 @@ Arvore* excluir(Arvore *node, char nome[])
 
     if (strcasecmp(nome, node->nome) < 0) // Verifica se o nome é menor que o nó atual e procura a esquerda da árvore
     {
-        excluir(node->esq, nome);
+        node->esq = excluir(node->esq, nome);
+
         return node;
     }
 
     if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome é maior que o nó atual e procura a direita da árvore
     {
-        excluir(node->dir, nome);
+        node->dir =excluir(node->dir, nome);
+
         return node;
     }
 
@@ -120,29 +122,19 @@ Arvore* excluir(Arvore *node, char nome[])
         return tempNode;
     }
 
+    // Nó tem dois filhos: subsitue pelo proximo nó na ordem (menor nó a direita da árvore)
+    tempNode = menorNode(node->dir);
 
-/*
-        if (node->esq != NULL) // 
-        {
-            aux2 = maior_esq(node);
-            aux3 = aux2;
-            aux2 = aux2->esq;
-        }
-        else
-        {
-            aux2 = menor_dir(node);
-            aux3 = aux2;
-            aux2 = aux2->dir;
-        }
-        strcpy(node->nome, aux3->nome);
-        free(aux3);
-        aux3 = NULL;
+    // Substitui os valores do node removido pelo menor nó
+    strcpy(node->nome, tempNode->nome);
+    strcpy(node->email, tempNode->email);
+    strcpy(node->instituicao, tempNode->instituicao);
 
-        return node;
-*/
+    // Remove o proximo nó na ordem (que está duplicado)
+    node->dir = excluir(node->dir, tempNode->nome);
 
+    return node;
 }
-
 
 void alterarPesquisador(Arvore *pesquisador, char email[], char instituicao[])
 {
@@ -178,30 +170,15 @@ void exibirPesquisador(Arvore *pesquisador)
     printf("\n");
 }
 
-Arvore **maior_esq(Arvore *raiz)
-{
-    Arvore **aux = &(raiz);
-    if ((*aux)->esq != NULL)
+Arvore* menorNode(Arvore *node) 
+{ 
+    Arvore* nodeAtual = node; 
+  
+    // Procura o nó mais a esquerda o possível
+    while (nodeAtual && nodeAtual->esq != NULL)
     {
-        aux = &(*aux)->esq;
-        while ((*aux)->dir != NULL)
-        {
-            aux = &(*aux)->dir;
-        }
+        nodeAtual = nodeAtual->esq;
     }
-    return aux;
-}
-
-Arvore **menor_dir(Arvore *raiz)
-{
-    Arvore **aux = &(raiz);
-    if ((*aux)->dir != NULL)
-    {
-        aux = &(*aux)->dir;
-        while ((*aux)->esq != NULL)
-        {
-            aux = &(*aux)->esq;
-        }
-    }
-    return aux;
+  
+    return nodeAtual; 
 }
