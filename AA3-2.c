@@ -59,7 +59,15 @@ int main()
             ler_email(email);
             ler_instituicao(instituicao);
             publicacoes = ler_publicacoes();
-            inserir(raiz, nome, email, instituicao, publicacoes);
+            
+            if (raiz == NULL) // Caso todos os nós forem apagados, recria a raiz da arvore
+            {
+                raiz = inserir(raiz, nome, email, instituicao, publicacoes);
+            }
+            else
+            {
+                inserir(raiz, nome, email, instituicao, publicacoes);
+            }            
 
             break;
 
@@ -90,7 +98,7 @@ int main()
         case 4:
             printf("\nREMOVER PESQUISADOR");
             ler_nome(nome);
-            raiz = excluir(raiz, nome);
+            excluir(raiz, nome);
 
             break;
 
