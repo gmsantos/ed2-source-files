@@ -17,7 +17,6 @@ Vanessa Paula Alves de Moura       RA: 580643
 #include "publicacoes.c"
 
 void menu(int *acao);
-void opcao(char op[]);
 
 void ler_nome(char nome[]);
 void ler_email(char email[]);
@@ -36,13 +35,6 @@ void menu(int *acao)
 
     printf("\nDigite uma opção: ");
     scanf("%d", acao);
-    getchar();
-}
-
-void opcao(char op[])
-{
-    printf("\nDeseja continuar sim: s ou não: n\n");
-    scanf("%s", op);
     getchar();
 }
 
@@ -77,6 +69,7 @@ int main()
             printf("\nCONSULTAR UM PESQUISADOR");
             ler_nome(nome);
             busca(raiz, nome);
+
             break;
 
         case 3:
@@ -100,11 +93,13 @@ int main()
             printf("\nREMOVER PESQUISADOR");
             ler_nome(nome);
             raiz = excluir(raiz, nome);
+
             break;
 
         case 5:
             printf("\nLISTAR OS PESQUISADORES DA REDE EM ORDEM");
             listarEmOrdem(raiz);
+            
             break;
         }
     }
