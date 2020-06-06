@@ -4,7 +4,7 @@
 
 #include "pesquisadores.h"
 
-struct pesquisador* criar(char nome[], char email[], char instituicao[]);
+struct pesquisador* criar(char nome[], char email[], char instituicao[], Lista *publicacoes);
 Arvore* menorNode(Arvore *node);
 void exibirPesquisador(struct pesquisador *pesquisador);
 
@@ -36,23 +36,23 @@ Arvore* busca(Arvore *node, char nome[])
     }
 }
 
-Arvore* inserir(Arvore *node, char nome[], char email[], char instituicao[])
+Arvore* inserir(Arvore *node, char nome[], char email[], char instituicao[], Lista *publicacoes)
 {
     if (node == NULL)
     {
-        return criar(nome, email, instituicao);
+        return criar(nome, email, instituicao, publicacoes);
     }
 
     if (strcasecmp(nome, node->nome) < 0)
     {
-        node->esq = inserir(node->esq, nome, email, instituicao);
+        node->esq = inserir(node->esq, nome, email, instituicao, publicacoes);
 
         return node;
     }
 
     if (strcasecmp(nome, node->nome) > 0)
     {
-        node->dir = inserir(node->dir, nome, email, instituicao);
+        node->dir = inserir(node->dir, nome, email, instituicao, publicacoes);
 
         return node;
     }
@@ -141,12 +141,13 @@ void alterarPesquisador(struct pesquisador *pesquisador, char email[], char inst
     exibirPesquisador(pesquisador);
 }
 
-struct pesquisador* criar(char nome[], char email[], char instituicao[])
+struct pesquisador* criar(char nome[], char email[], char instituicao[], Lista *publicacoes)
 {
     Arvore *temp = malloc(sizeof(Arvore));
     strcpy(temp->nome, nome);
     strcpy(temp->email, email);
     strcpy(temp->instituicao, instituicao);
+    temp->publicacoes = publicacoes;
 
     temp->esq = NULL;
     temp->dir = NULL;
@@ -169,7 +170,11 @@ void exibirPesquisador(struct pesquisador *pesquisador)
     printf("\nNome: %s", pesquisador->nome);
     printf("\nEmail: %s", pesquisador->email);
     printf("\nInstituição: %s", pesquisador->instituicao);
-    //printf("\nPublicações: %s", pesquisador->publicoes);
+    if (pesquisador->publicacoes != NULL)
+    {
+        printf("\nLista de Publicações:");
+        exibirPublicacoes(pesquisador->publicacoes);
+    }
     printf("\n");
 }
 

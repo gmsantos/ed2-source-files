@@ -9,4 +9,9 @@ struct publicacao
     struct publicacao *proximo;
 };
 
+typedef struct publicacao Lista;
+
+Lista *novaPubicacao(char titulo[], int ano, char editora[], Lista *anterior);
+void exibirPublicacoes(Lista *publicacoes);
+
 #endif

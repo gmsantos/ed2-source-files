@@ -21,7 +21,10 @@ void menu(int *acao);
 void ler_nome(char nome[]);
 void ler_email(char email[]);
 void ler_instituicao(char instituicao[]);
-void ler_public(char public[]);
+
+void ler_publicacao(char public[]);
+void ler_publicacao(char public[]);
+void ler_publicacao(char public[]);
 
 int main()
 {
@@ -31,10 +34,17 @@ int main()
     printf("Inserindo pesquisadores iniciais na rede...\n");
     Arvore *raiz = NULL;
 
+    // Cria as listas de publicações
+    Lista *publicacoesMarcos = novaPubicacao("Árvores e suas Aplicações", 2011, "Makron Books", NULL);
+    Lista *publicacoesMarcos2 = novaPubicacao("Estruturas de Dados em Disco", 2008, "Campus", publicacoesMarcos);
+    Lista *publicacoesFlavio = novaPubicacao("Aspectos Formais", 1991, "Elsevier", NULL);
+    Lista *publicacoesFlavio2 = novaPubicacao("Autômatos", 1994, "ETC", publicacoesFlavio);
+    Lista *publicacoesOdair = novaPubicacao("Lógica de Programação", 2002, "Elsevier", NULL);
+
     // Cria a raiz da árvore
-    raiz = inserir(raiz, "Marcos Teixeira", "teixeira@gmail.com", "UFSCar");
-    inserir(raiz, "Flávio Mendes", "fm@ufrj.br", "UFRJ");
-    inserir(raiz, "Odair Siqueira", "odair@din.uem.br", "UEM");
+    raiz = inserir(raiz, "Marcos Teixeira", "teixeira@gmail.com", "UFSCar", publicacoesMarcos);
+    inserir(raiz, "Flávio Mendes", "fm@ufrj.br", "UFRJ", publicacoesFlavio);
+    inserir(raiz, "Odair Siqueira", "odair@din.uem.br", "UEM", publicacoesOdair);
 
     while (acao != 6)
     {
@@ -46,7 +56,7 @@ int main()
             ler_nome(nome);
             ler_email(email);
             ler_instituicao(instituicao);
-            inserir(raiz, nome, email, instituicao);
+            inserir(raiz, nome, email, instituicao, NULL);
 
             break;
 
