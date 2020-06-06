@@ -15,16 +15,16 @@ struct pesquisador
 
 typedef struct pesquisador Arvore;
 
-Arvore* busca(Arvore* node, char nome[]);
-Arvore* inserir(Arvore* node, char nome[], char email[], char instituicao[]);
-Arvore* excluir(Arvore* node, char nome[]);
+Arvore* busca(Arvore *node, char nome[]);
+Arvore* inserir(Arvore *node, char nome[], char email[], char instituicao[]);
+Arvore* excluir(Arvore *node, char nome[]);
 
-void alterarPesquisador(Arvore* pesquisador, char email[], char instituicao[]);
-void listarEmOrdem(Arvore* node);
+void alterarPesquisador(Arvore *pesquisador, char email[], char instituicao[]);
+void listarEmOrdem(Arvore *node);
 
 void exibirPesquisador(Arvore *pesquisador);
-//Arvore **menor_dir(Arvore* node);
-//Arvore **maior_esq(Arvore* node);
+//Arvore **menor_dir(Arvore *node);
+//Arvore **maior_esq(Arvore *node);
 Arvore **menor_dir(Arvore *raiz);
 Arvore **maior_esq(Arvore *raiz);
 
