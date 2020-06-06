@@ -53,6 +53,8 @@ int main()
 
     printf("Inserindo pesquisadores iniciais na rede...\n");
     Arvore *raiz = NULL;
+
+    // Cria a raiz da árvore
     raiz = inserir(raiz, "Marcos Teixeira", "teixeira@gmail.com", "UFSCar");
     inserir(raiz, "Flávio Mendes", "fm@ufrj.br", "UFRJ");
     inserir(raiz, "Odair Siqueira", "odair@din.uem.br", "UEM");

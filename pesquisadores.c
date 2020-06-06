@@ -1,22 +1,12 @@
-
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
 #include "pesquisadores.h"
 
-Arvore* criar(char nome[], char email[], char instituicao[])
-{
-    Arvore *temp = malloc(sizeof(Arvore));
-    strcpy(temp->nome, nome);
-    strcpy(temp->email, email);
-    strcpy(temp->instituicao, instituicao);
-
-    temp->esq = NULL;
-    temp->dir = NULL;
-
-    return temp;
-}
+struct pesquisador* criar(char nome[], char email[], char instituicao[]);
+Arvore* menorNode(Arvore *node);
+void exibirPesquisador(struct pesquisador *pesquisador);
 
 Arvore* busca(Arvore *node, char nome[])
 {
@@ -136,7 +126,7 @@ Arvore* excluir(Arvore *node, char nome[])
     return node;
 }
 
-void alterarPesquisador(Arvore *pesquisador, char email[], char instituicao[])
+void alterarPesquisador(struct pesquisador *pesquisador, char email[], char instituicao[])
 {
     if (pesquisador == NULL) // Essa condição só é verdadeira caso tente alterar um pesquisador nulo
     {
@@ -151,6 +141,19 @@ void alterarPesquisador(Arvore *pesquisador, char email[], char instituicao[])
     exibirPesquisador(pesquisador);
 }
 
+struct pesquisador* criar(char nome[], char email[], char instituicao[])
+{
+    Arvore *temp = malloc(sizeof(Arvore));
+    strcpy(temp->nome, nome);
+    strcpy(temp->email, email);
+    strcpy(temp->instituicao, instituicao);
+
+    temp->esq = NULL;
+    temp->dir = NULL;
+
+    return temp;
+}
+
 void listarEmOrdem(Arvore *raiz)
 {
     if (raiz != NULL)
@@ -161,7 +164,7 @@ void listarEmOrdem(Arvore *raiz)
     }
 }
 
-void exibirPesquisador(Arvore *pesquisador)
+void exibirPesquisador(struct pesquisador *pesquisador)
 {
     printf("\nNome: %s", pesquisador->nome);
     printf("\nEmail: %s", pesquisador->email);

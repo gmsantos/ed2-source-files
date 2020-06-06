@@ -17,12 +17,8 @@ typedef struct pesquisador Arvore;
 
 Arvore* busca(Arvore *node, char nome[]);
 Arvore* inserir(Arvore *node, char nome[], char email[], char instituicao[]);
+void alterarPesquisador(struct pesquisador *pesquisador, char email[], char instituicao[]);
 Arvore* excluir(Arvore *node, char nome[]);
-void alterarPesquisador(Arvore *pesquisador, char email[], char instituicao[]);
-
-Arvore* menorNode(Arvore *node);
 void listarEmOrdem(Arvore *node);
-void exibirPesquisador(Arvore *pesquisador);
-
 
 #endif
