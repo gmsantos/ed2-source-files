@@ -1,7 +1,7 @@
 /*
-AA3.2 - Atividade em grupo: Trabalho PrÃ¡tico - Parte 1
-ElaboraÃ§Ã£o de um aplicativo que disponibiliza as funcionalidades de uma rede de colaboraÃ§Ã£o de pesquisadores. Os dados dos
-pesquisadores da rede devem ser armazenados em memÃ³ria utilizando uma Ã¡rvore binÃ¡ria de busca (ABB)
+AA3.2 - Atividade em grupo: Trabalho Prático - Parte 1
+Elaboraçãoo de um aplicativo que disponibiliza as funcionalidades de uma rede de colaboração de pesquisadores. Os dados dos
+pesquisadores da rede devem ser armazenados em memória utilizando uma árvore binária de busca (ABB)
 
 Integrantes:
 Gabriel Machado Santos             RA: 581062
@@ -36,16 +36,16 @@ int main()
     printf("Inserindo pesquisadores iniciais na rede...\n");
     Arvore *raiz = NULL;
 
-    // Cria as listas de publicaÃ§Ãµes
-    Lista *publicacoesMarcos = novaPublicacao("Ãrvores e suas AplicaÃ§Ãµes", 2011, "Makron Books", NULL);
+    // Cria as listas de publicações
+    Lista *publicacoesMarcos = novaPublicacao("Árvores e suas Aplicações", 2011, "Makron Books", NULL);
     Lista *publicacoesMarcos2 = novaPublicacao("Estruturas de Dados em Disco", 2008, "Campus", publicacoesMarcos);
     Lista *publicacoesFlavio = novaPublicacao("Aspectos Formais", 1991, "Elsevier", NULL);
-    Lista *publicacoesFlavio2 = novaPublicacao("AutÃ´matos", 1994, "ETC", publicacoesFlavio);
-    Lista *publicacoesOdair = novaPublicacao("LÃ³gica de ProgramaÃ§Ã£o", 2002, "Elsevier", NULL);
+    Lista *publicacoesFlavio2 = novaPublicacao("Autómatos", 1994, "ETC", publicacoesFlavio);
+    Lista *publicacoesOdair = novaPublicacao("Lógica de Programação", 2002, "Elsevier", NULL);
 
-    // Cria a raiz da Ã¡rvore
+    // Cria a raiz da Árvore
     raiz = inserir(raiz, "Marcos Teixeira", "teixeira@gmail.com", "UFSCar", publicacoesMarcos);
-    inserir(raiz, "FlÃ¡vio Mendes", "fm@ufrj.br", "UFRJ", publicacoesFlavio);
+    inserir(raiz, "Flávio Mendes", "fm@ufrj.br", "UFRJ", publicacoesFlavio);
     inserir(raiz, "Odair Siqueira", "odair@din.uem.br", "UEM", publicacoesOdair);
 
     while (acao != 6)
@@ -60,7 +60,7 @@ int main()
             ler_instituicao(instituicao);
             publicacoes = ler_publicacoes();
 
-            if (raiz == NULL) // Caso todos os nÃ³s forem apagados, recria a raiz da arvore
+            if (raiz == NULL) // Caso todos os nós forem apagados, recria a raiz da arvore
             {
                 raiz = inserir(raiz, nome, email, instituicao, publicacoes);
             }
@@ -83,9 +83,9 @@ int main()
             ler_nome(nome);
             Arvore *pesquisador = busca(raiz, nome);
 
-            if (pesquisador == NULL) // Verificar se o pesquisador estÃ¡ na rede
+            if (pesquisador == NULL) // Verificar se o pesquisador está na rede
             {
-                break; // Encerra a aÃ§Ã£o caso aquele pesquisador nÃ£o esteja na rede
+                break; // Encerra a ação caso aquele pesquisador não esteja na rede
             }
 
             printf("\n > Insira os novos dados para esse pesquisador\n");
@@ -98,7 +98,7 @@ int main()
         case 4:
             printf("\nREMOVER PESQUISADOR");
             ler_nome(nome);
-            excluir(raiz, nome);
+            raiz = excluir(raiz, nome);
 
             break;
 
@@ -114,14 +114,14 @@ int main()
 void menu(int *acao)
 {
     printf("\nCADASTRO DE PESQUISADORES\n");
-    printf("1 - InserÃ§Ã£o de novos pesquisadores na rede\n");
-    printf("2 - Consulta de pesquisador da rede\n");
-    printf("3 - AlteraÃ§Ã£o dos dados de pesquisador da rede\n");
-    printf("4 - RemoÃ§Ã£o de pesquisadores da rede\n");
-    printf("5 - Listar os pesquisadores da rede em ordem\n");
+    printf("1 - Inserir\n");
+    printf("2 - Pesquisar\n");
+    printf("3 - Alterar \n");
+    printf("4 - Excluir\n");
+    printf("5 - Listar\n");
     printf("6 - Sair do programa\n");
 
-    printf("\nDigite uma opÃ§Ã£o: ");
+    printf("\nDigite uma opção: ");
     scanf("%d", acao);
     getchar();
 }
@@ -142,14 +142,14 @@ void ler_email(char email[])
 
 void ler_instituicao(char instituicao[])
 {
-    printf("Digite a instituiÃ§Ã£o: ");
+    printf("Digite a instituiçãoo: ");
     fgets(instituicao, 50, stdin);
     instituicao[strcspn(instituicao, "\r\n")] = 0;
 }
 
 void ler_titulo(char titulo[])
 {
-    printf("\nDigite o titulo: ");
+    printf("\nDigite o título: ");
     fgets(titulo, 90, stdin);
     titulo[strcspn(titulo, "\r\n")] = 0;
 }
@@ -175,15 +175,15 @@ Lista *ler_publicacoes()
     Lista *lista = NULL;
     Lista *anterior = NULL;
 
-    // Loop para inserir as publicaÃ§Ãµes do pesquisador
-    // aceita os inputs de S ou N para inserir mais publicaÃ§Ãµes ou prosseguir
+    // Loop para inserir as publicações do pesquisador
+    // aceita os inputs de S ou N para inserir mais publicações ou prosseguir
     do
     {
-        printf("\nDeseja incluir uma nova publicaÃ§Ã£o para esse pesquisador? ([S]im/[N]Ã£o) : ");
+        printf("\nDeseja incluir uma nova publicação para esse pesquisador? ([S]Sim/[N]Não) : ");
         scanf("%s", confirma);
         getchar();
 
-        if (strcasecmp(confirma, "s") == 0) // LÃª os dados da publicaÃ§Ã£o
+        if (strcasecmp(confirma, "s") == 0) // Lê os dados da publicação
         {
             ler_titulo(titulo);
             ler_ano(&ano);
@@ -193,14 +193,14 @@ Lista *ler_publicacoes()
             {
                 lista = novaPublicacao(titulo, ano, editora, NULL);
 
-                // mantÃ©m a referencia anterior para definir o pointer da proxima publicaÃ§Ã£o
+                // mantêm a referencia anterior para definir o pointer da proxima publicação
                 anterior = lista;
             }
             else
             {
                 Lista *nova = novaPublicacao(titulo, ano, editora, anterior);
 
-                // mantÃ©m a referencia anterior para o ultimo elemento da lista
+                // mantêm a referencia anterior para o ultimo elemento da lista
                 anterior = nova;
             }
         }

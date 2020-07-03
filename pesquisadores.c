@@ -8,11 +8,85 @@ struct pesquisador *criar(char nome[], char email[], char instituicao[], Lista *
 Arvore *menorNode(Arvore *node);
 void exibirPesquisador(struct pesquisador *pesquisador);
 
+int altura(Arvore *node)
+{
+    if (node == NULL)
+    {
+        return -1;
+    }
+    else
+    {
+        return node->altura;
+    }
+}
+
+int maior(int x, int y)
+{
+    return x > y ? x : y;
+}
+
+//implementação das rotações
+void RotacaoLL(Arvore *raiz)
+{
+    Arvore *node;
+    node = raiz->esq;
+    raiz->esq = node->dir;
+    node->dir = raiz;
+
+    raiz->altura = maior(altura(raiz->esq), altura(raiz->dir)) + 1;
+    node->altura = maior(altura(node->esq), raiz->altura) + 1;
+
+    raiz = node;
+}
+
+void RotacaoRR(Arvore *raiz)
+{
+    Arvore *node;
+    node = raiz->dir;
+    raiz->dir = node->esq;
+    node->esq = raiz;
+    raiz->altura = maior(altura(raiz->esq),
+                         altura(raiz->dir)) +
+                   1;
+
+    node->altura = maior(altura(node->dir), raiz->altura) + 1;
+    raiz = node;
+}
+
+void RotacaoLR(Arvore *raiz)
+{
+    RotacaoRR(raiz->esq);
+    RotacaoLL(raiz);
+}
+
+void RotacaoRL(Arvore *raiz)
+{
+    RotacaoLL(raiz->dir);
+    RotacaoRR(raiz);
+}
+
+int fatorBalanceamento(Arvore *node)
+{
+    return altura(node->esq) - altura(node->dir);
+}
+
+Arvore *procuraMenor(Arvore *nodeAtual)
+{
+    Arvore *no1 = nodeAtual;
+    Arvore *no2 = nodeAtual->esq;
+    while (no2 != NULL)
+    {
+        no1 = no2;
+        no2 = no2->esq;
+    }
+    return no1;
+}
+
 Arvore *busca(Arvore *node, char nome[])
 {
     if (node == NULL)
     {
-        printf("\n > Pesquisador nÃ£o foi encontrado.\n");
+        printf("\n > Pesquisador não foi encontrado.\n");
 
         return node;
     }
@@ -46,18 +120,40 @@ Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lis
     if (strcasecmp(nome, node->nome) < 0)
     {
         node->esq = inserir(node->esq, nome, email, instituicao, publicacoes);
-
+        if (fatorBalanceamento(node->esq) >= 2)
+        {
+            if (nome < node->esq->nome)
+            {
+                RotacaoLL(node);
+            }
+            else
+            {
+                RotacaoLR(node);
+            }
+        }
         return node;
     }
 
     if (strcasecmp(nome, node->nome) > 0)
     {
         node->dir = inserir(node->dir, nome, email, instituicao, publicacoes);
+        if (fatorBalanceamento(node->dir) >= 2)
+        {
+            if (node->dir->nome < nome)
+            {
+                RotacaoRR(node);
+            }
+            else
+            {
+                RotacaoRL(node);
+            }
+        }
 
         return node;
     }
 
-    printf("\n > Esse pesquisador jÃ¡ existe na rede. Nenhuma alteraÃ§Ã£o foi efetuada.");
+    node->altura = maior(altura(node->esq), altura(node->dir)) + 1;
+    printf("\n > Esse pesquisador já existe na rede. Nenhuma alteração foi efetuada.");
 
     return node;
 }
@@ -66,28 +162,28 @@ Arvore *excluir(Arvore *node, char nome[])
 {
     Arvore *tempNode = NULL;
 
-    if (node == NULL) // definiÃ§Ã£o de parada da recursÃ£o
+    if (node == NULL) // definição de parada da recursão
     {
         return node;
     }
 
-    if (strcasecmp(nome, node->nome) < 0) // Verifica se o nome Ã© menor que o nÃ³ atual e procura a esquerda da Ã¡rvore
+    if (strcasecmp(nome, node->nome) < 0) // Verifica se o nome é menor que o nó atual e procura a esquerda da árvore
     {
         node->esq = excluir(node->esq, nome);
 
         return node;
     }
 
-    if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome Ã© maior que o nÃ³ atual e procura a direita da Ã¡rvore
+    if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome é maior que o nó atual e procura a direita da árvore
     {
         node->dir = excluir(node->dir, nome);
 
         return node;
     }
 
-    // Se nÃ£o Ã© maior, menor ou nulo, entÃ£o encontramos o nÃ³ a ser excluÃ­do
+    // Se não é maior, menor ou nulo, então encontramos o nó a ser excluído
 
-    if (node->esq == NULL && node->dir == NULL) // Esse nÃ³ Ã© folha? Se sim, simplesmente remove o nÃ³
+    if (node->esq == NULL && node->dir == NULL) // Esse nó é folha? Se sim, simplesmente remove o nó
     {
         free(node);
         node = NULL;
@@ -95,7 +191,7 @@ Arvore *excluir(Arvore *node, char nome[])
         return node;
     }
 
-    if (node->esq == NULL || node->dir == NULL) // Se o nÃ³ sÃ³ tem um filho, substitue a posiÃ§Ã£o do filho naquele nÃ³
+    if (node->esq == NULL || node->dir == NULL) // Se o nó só tem um filho, substitue a posição do filho naquele nó
     {
         if (node->esq == NULL)
         {
@@ -112,16 +208,16 @@ Arvore *excluir(Arvore *node, char nome[])
         return tempNode;
     }
 
-    // NÃ³ tem dois filhos: subsitue pelo proximo nÃ³ na ordem (menor nÃ³ a direita da Ã¡rvore)
+    // Nó tem dois filhos: subsitue pelo proximo nó na ordem (menor nó a direita da árvore)
     tempNode = menorNode(node->dir);
 
-    // Substitui os valores do node removido pelo menor nÃ³
+    // Substitui os valores do node removido pelo menor nó
     strcpy(node->nome, tempNode->nome);
     strcpy(node->email, tempNode->email);
     strcpy(node->instituicao, tempNode->instituicao);
     node->publicacoes = tempNode->publicacoes;
 
-    // Remove o proximo nÃ³ na ordem (que estÃ¡ duplicado)
+    // Remove o proximo nó na ordem (que está duplicado)
     node->dir = excluir(node->dir, tempNode->nome);
 
     return node;
@@ -129,9 +225,9 @@ Arvore *excluir(Arvore *node, char nome[])
 
 void alterarPesquisador(struct pesquisador *pesquisador, char email[], char instituicao[])
 {
-    if (pesquisador == NULL) // Essa condiÃ§Ã£o sÃ³ Ã© verdadeira caso tente alterar um pesquisador nulo
+    if (pesquisador == NULL) // Essa condição só é verdadeira caso tente alterar um pesquisador nulo
     {
-        printf("\n > Informe um pesquisador presente na rede antes de tentar alterÃ¡-lo.");
+        printf("\n > Informe um pesquisador presente na rede antes de tentar alterá-lo.");
         return;
     }
 
@@ -170,10 +266,10 @@ void exibirPesquisador(struct pesquisador *pesquisador)
 {
     printf("\nNome: %s", pesquisador->nome);
     printf("\nEmail: %s", pesquisador->email);
-    printf("\nInstituiÃ§Ã£o: %s", pesquisador->instituicao);
+    printf("\nInstituição: %s", pesquisador->instituicao);
     if (pesquisador->publicacoes != NULL)
     {
-        printf("\nLista de PublicaÃ§Ãµes:");
+        printf("\nLista de Publicações:");
         exibirPublicacoes(pesquisador->publicacoes);
     }
     printf("\n");
@@ -183,7 +279,7 @@ Arvore *menorNode(Arvore *node)
 {
     Arvore *nodeAtual = node;
 
-    // Procura o nÃ³ mais a esquerda o possÃ­vel
+    // Procura o nó mais a esquerda o possível
     while (nodeAtual && nodeAtual->esq != NULL)
     {
         nodeAtual = nodeAtual->esq;

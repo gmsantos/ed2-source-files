@@ -10,6 +10,7 @@ struct pesquisador
     char instituicao[50];
     struct publicacao *publicacoes;
     struct pesquisador *esq, *dir;
+    int altura;
 };
 
 typedef struct pesquisador Arvore;
