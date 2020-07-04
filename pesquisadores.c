@@ -10,13 +10,13 @@ void exibirPesquisador(struct pesquisador *pesquisador);
 
 // Funções para balanceamento da árvore
 int altura(Arvore *node);
-int maiorInt(int x, int y);
+int maior(int x, int y);
 int fatorBalanceamento(Arvore *node);
 
-void rotacaoEsq(Arvore *raiz);
-void rotacaoDir(Arvore *raiz);
-void rotacaoEsqDir(Arvore *raiz);
-void rotacaoDirEsq(Arvore *raiz);
+void rotacaoEsq(Arvore *root);
+void rotacaoDir(Arvore *root);
+void rotacaoEsqDir(Arvore *root);
+void rotacaoDirEsq(Arvore *root);
 
 Arvore *busca(Arvore *node, char nome[])
 {
@@ -88,7 +88,7 @@ Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lis
         return node;
     }
 
-    node->altura = maiorInt(altura(node->esq), altura(node->dir)) + 1;
+    node->altura = maior(altura(node->esq), altura(node->dir)) + 1;
     printf("\n > Esse pesquisador já existe na rede. Nenhuma alteração foi efetuada.");
 
     return node;
@@ -110,14 +110,14 @@ Arvore *excluir(Arvore *node, char nome[])
         return node;
     }
 
-    if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome é maiorInt que o nó atual e procura a direita da árvore
+    if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome é maior que o nó atual e procura a direita da árvore
     {
         node->dir = excluir(node->dir, nome);
 
         return node;
     }
 
-    // Se não é maiorInt, menor ou nulo, então encontramos o nó a ser excluído
+    // Se não é maior, menor ou nulo, então encontramos o nó a ser excluído
 
     if (node->esq == NULL && node->dir == NULL) // Esse nó é folha? Se sim, simplesmente remove o nó
     {
@@ -244,7 +244,7 @@ int altura(Arvore *node)
     return node->altura;    
 }
 
-int maiorInt(int x, int y)
+int maior(int x, int y)
 {
     return (x > y) ? x : y;
 }
@@ -254,43 +254,40 @@ int fatorBalanceamento(Arvore *node)
     return altura(node->esq) - altura(node->dir);
 }
 
-void rotacaoEsq(Arvore *raiz)
+void rotacaoEsq(Arvore *root)
 {
-    Arvore *node;
-    node = raiz->esq;
-    raiz->esq = node->dir;
-    node->dir = raiz;
+    Arvore *node = root->esq;
+    root->esq = node->dir;
+    node->dir = root;
 
-    raiz->altura = maior(altura(raiz->esq), altura(raiz->dir)) + 1;
-    node->altura = maior(altura(node->esq), raiz->altura) + 1;
+    root->altura = maior(altura(root->esq), altura(root->dir)) + 1;
+    node->altura = maior(altura(node->esq), root->altura) + 1;
 
-    raiz = node;
+    root = node;
 }
 
-void rotacaoDir(Arvore *raiz)
+void rotacaoDir(Arvore *root)
 {
-    Arvore *node;
-    node = raiz->dir;
-    raiz->dir = node->esq;
-    node->esq = raiz;
-    raiz->altura = maior(altura(raiz->esq),
-                         altura(raiz->dir)) +
-                   1;
+    Arvore *node = root->dir;
+    root->dir = node->esq;
+    node->esq = root;
 
-    node->altura = maior(altura(node->dir), raiz->altura) + 1;
-    raiz = node;
+    root->altura = maior(altura(root->esq), altura(root->dir)) + 1;
+    node->altura = maior(altura(node->dir), root->altura) + 1;
+
+    root = node;
 }
 
-void rotacaoEsqDir(Arvore *raiz)
+void rotacaoEsqDir(Arvore *root)
 {
-    RotacaoRR(raiz->esq);
-    RotacaoLL(raiz);
+    rotacaoDir(root->esq);
+    rotacaoEsq(root);
 }
 
-void rotacaoDirEsq(Arvore *raiz)
+void rotacaoDirEsq(Arvore *root)
 {
-    RotacaoLL(raiz->dir);
-    RotacaoRR(raiz);
+    rotacaoEsq(root->dir);
+    rotacaoDir(root);
 }
 
 Arvore *procuraMenor(Arvore *nodeAtual)
@@ -304,4 +301,3 @@ Arvore *procuraMenor(Arvore *nodeAtual)
     }
     return no1;
 }
-
