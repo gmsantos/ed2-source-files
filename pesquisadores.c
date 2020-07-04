@@ -8,79 +8,15 @@ struct pesquisador *criar(char nome[], char email[], char instituicao[], Lista *
 Arvore *menorNode(Arvore *node);
 void exibirPesquisador(struct pesquisador *pesquisador);
 
-int altura(Arvore *node)
-{
-    if (node == NULL)
-    {
-        return -1;
-    }
-    else
-    {
-        return node->altura;
-    }
-}
+// Funções para balanceamento da árvore
+int altura(Arvore *node);
+int maiorInt(int x, int y);
+int fatorBalanceamento(Arvore *node);
 
-int maior(int x, int y)
-{
-    return x > y ? x : y;
-}
-
-//implementação das rotações
-void RotacaoLL(Arvore *raiz)
-{
-    Arvore *node;
-    node = raiz->esq;
-    raiz->esq = node->dir;
-    node->dir = raiz;
-
-    raiz->altura = maior(altura(raiz->esq), altura(raiz->dir)) + 1;
-    node->altura = maior(altura(node->esq), raiz->altura) + 1;
-
-    raiz = node;
-}
-
-void RotacaoRR(Arvore *raiz)
-{
-    Arvore *node;
-    node = raiz->dir;
-    raiz->dir = node->esq;
-    node->esq = raiz;
-    raiz->altura = maior(altura(raiz->esq),
-                         altura(raiz->dir)) +
-                   1;
-
-    node->altura = maior(altura(node->dir), raiz->altura) + 1;
-    raiz = node;
-}
-
-void RotacaoLR(Arvore *raiz)
-{
-    RotacaoRR(raiz->esq);
-    RotacaoLL(raiz);
-}
-
-void RotacaoRL(Arvore *raiz)
-{
-    RotacaoLL(raiz->dir);
-    RotacaoRR(raiz);
-}
-
-int fatorBalanceamento(Arvore *node)
-{
-    return altura(node->esq) - altura(node->dir);
-}
-
-Arvore *procuraMenor(Arvore *nodeAtual)
-{
-    Arvore *no1 = nodeAtual;
-    Arvore *no2 = nodeAtual->esq;
-    while (no2 != NULL)
-    {
-        no1 = no2;
-        no2 = no2->esq;
-    }
-    return no1;
-}
+void rotacaoEsq(Arvore *raiz);
+void rotacaoDir(Arvore *raiz);
+void rotacaoEsqDir(Arvore *raiz);
+void rotacaoDirEsq(Arvore *raiz);
 
 Arvore *busca(Arvore *node, char nome[])
 {
@@ -124,11 +60,11 @@ Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lis
         {
             if (nome < node->esq->nome)
             {
-                RotacaoLL(node);
+                rotacaoEsq(node);
             }
             else
             {
-                RotacaoLR(node);
+                rotacaoEsqDir(node);
             }
         }
         return node;
@@ -141,18 +77,18 @@ Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lis
         {
             if (node->dir->nome < nome)
             {
-                RotacaoRR(node);
+                rotacaoDir(node);
             }
             else
             {
-                RotacaoRL(node);
+                rotacaoDirEsq(node);
             }
         }
 
         return node;
     }
 
-    node->altura = maior(altura(node->esq), altura(node->dir)) + 1;
+    node->altura = maiorInt(altura(node->esq), altura(node->dir)) + 1;
     printf("\n > Esse pesquisador já existe na rede. Nenhuma alteração foi efetuada.");
 
     return node;
@@ -174,14 +110,14 @@ Arvore *excluir(Arvore *node, char nome[])
         return node;
     }
 
-    if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome é maior que o nó atual e procura a direita da árvore
+    if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome é maiorInt que o nó atual e procura a direita da árvore
     {
         node->dir = excluir(node->dir, nome);
 
         return node;
     }
 
-    // Se não é maior, menor ou nulo, então encontramos o nó a ser excluído
+    // Se não é maiorInt, menor ou nulo, então encontramos o nó a ser excluído
 
     if (node->esq == NULL && node->dir == NULL) // Esse nó é folha? Se sim, simplesmente remove o nó
     {
@@ -238,6 +174,26 @@ void alterarPesquisador(struct pesquisador *pesquisador, char email[], char inst
     exibirPesquisador(pesquisador);
 }
 
+void listarEmOrdem(Arvore *raiz)
+{
+    if (raiz != NULL)
+    {
+        listarEmOrdem(raiz->esq);
+        exibirPesquisador(raiz);
+        listarEmOrdem(raiz->dir);
+    }
+}
+
+void listar(Arvore *raiz)
+{
+    if (raiz != NULL)
+    {
+        exibirPesquisador(raiz);
+        listarEmOrdem(raiz->esq);
+        listarEmOrdem(raiz->dir);
+    }
+}
+
 struct pesquisador *criar(char nome[], char email[], char instituicao[], Lista *publicacoes)
 {
     Arvore *temp = malloc(sizeof(Arvore));
@@ -250,16 +206,6 @@ struct pesquisador *criar(char nome[], char email[], char instituicao[], Lista *
     temp->dir = NULL;
 
     return temp;
-}
-
-void listarEmOrdem(Arvore *raiz)
-{
-    if (raiz != NULL)
-    {
-        listarEmOrdem(raiz->esq);
-        exibirPesquisador(raiz);
-        listarEmOrdem(raiz->dir);
-    }
 }
 
 void exibirPesquisador(struct pesquisador *pesquisador)
@@ -287,3 +233,75 @@ Arvore *menorNode(Arvore *node)
 
     return nodeAtual;
 }
+
+int altura(Arvore *node)
+{
+    if (node == NULL)
+    {
+        return 0;
+    }
+
+    return node->altura;    
+}
+
+int maiorInt(int x, int y)
+{
+    return (x > y) ? x : y;
+}
+
+int fatorBalanceamento(Arvore *node)
+{
+    return altura(node->esq) - altura(node->dir);
+}
+
+void rotacaoEsq(Arvore *raiz)
+{
+    Arvore *node;
+    node = raiz->esq;
+    raiz->esq = node->dir;
+    node->dir = raiz;
+
+    raiz->altura = maior(altura(raiz->esq), altura(raiz->dir)) + 1;
+    node->altura = maior(altura(node->esq), raiz->altura) + 1;
+
+    raiz = node;
+}
+
+void rotacaoDir(Arvore *raiz)
+{
+    Arvore *node;
+    node = raiz->dir;
+    raiz->dir = node->esq;
+    node->esq = raiz;
+    raiz->altura = maior(altura(raiz->esq),
+                         altura(raiz->dir)) +
+                   1;
+
+    node->altura = maior(altura(node->dir), raiz->altura) + 1;
+    raiz = node;
+}
+
+void rotacaoEsqDir(Arvore *raiz)
+{
+    RotacaoRR(raiz->esq);
+    RotacaoLL(raiz);
+}
+
+void rotacaoDirEsq(Arvore *raiz)
+{
+    RotacaoLL(raiz->dir);
+    RotacaoRR(raiz);
+}
+
+Arvore *procuraMenor(Arvore *nodeAtual)
+{
+    Arvore *no1 = nodeAtual;
+    Arvore *no2 = nodeAtual->esq;
+    while (no2 != NULL)
+    {
+        no1 = no2;
+        no2 = no2->esq;
+    }
+    return no1;
+}
+
