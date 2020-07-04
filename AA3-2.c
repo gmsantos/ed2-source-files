@@ -1,6 +1,6 @@
 /*
 AA3.2 - Atividade em grupo: Trabalho Prático - Parte 1
-Elaboraçãoo de um aplicativo que disponibiliza as funcionalidades de uma rede de colaboração de pesquisadores. Os dados dos
+Elaboração de um aplicativo que disponibiliza as funcionalidades de uma rede de colaboração de pesquisadores. Os dados dos
 pesquisadores da rede devem ser armazenados em memória utilizando uma árvore binária de busca (ABB)
 
 Integrantes:
