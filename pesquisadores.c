@@ -13,10 +13,9 @@ int altura(Arvore *node);
 int maior(int x, int y);
 int fatorBalanceamento(Arvore *node);
 
-void rotacaoEsq(Arvore *root);
-void rotacaoDir(Arvore *root);
-void rotacaoEsqDir(Arvore *root);
-void rotacaoDirEsq(Arvore *root);
+Arvore *rebalancear(Arvore *node, char nome[]);
+Arvore *rotacaoEsq(Arvore *node);
+Arvore *rotacaoDir(Arvore *node);
 
 Arvore *busca(Arvore *node, char nome[])
 {
@@ -56,48 +55,59 @@ Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lis
     if (strcasecmp(nome, node->nome) < 0)
     {
         node->esq = inserir(node->esq, nome, email, instituicao, publicacoes);
-        if (fatorBalanceamento(node->esq) >= 2)
-        {
-            if (nome < node->esq->nome)
-            {
-                rotacaoEsq(node);
-            }
-            else
-            {
-                rotacaoEsqDir(node);
-            }
-        }
-        return node;
     }
 
     if (strcasecmp(nome, node->nome) > 0)
     {
         node->dir = inserir(node->dir, nome, email, instituicao, publicacoes);
-        if (fatorBalanceamento(node->dir) >= 2)
-        {
-            if (node->dir->nome < nome)
-            {
-                rotacaoDir(node);
-            }
-            else
-            {
-                rotacaoDirEsq(node);
-            }
-        }
+    }
+
+    if (strcasecmp(nome, node->nome) == 0)
+    {
+        printf("\n > Esse pesquisador já existe na rede. Nenhuma alteração foi efetuada.");
 
         return node;
     }
 
+    // atualiza a altura do nó
     node->altura = maior(altura(node->esq), altura(node->dir)) + 1;
-    printf("\n > Esse pesquisador já existe na rede. Nenhuma alteração foi efetuada.");
 
+    // determina o fator de balanceamento do nó
+    int balance = fatorBalanceamento(node);
+
+    // Rebalanceia a árvore caso necessário
+    // Esquerda Esquerda
+    if (balance > 1 && strcasecmp(nome, node->esq->nome) < 0)
+    {
+        return rotacaoDir(node);
+    }
+
+    // Direita Direita
+    if (balance < -1 && strcasecmp(nome, node->dir->nome) > 0)
+    {
+        return rotacaoEsq(node);
+    }
+
+    // Esquerda Direita
+    if (balance > 1 && strcasecmp(nome, node->esq->nome) > 0)
+    {
+        node->esq = rotacaoEsq(node->esq);
+        return rotacaoDir(node);
+    }
+
+    // Direita Esquerda
+    if (balance < -1 && strcasecmp(nome, node->dir->nome) < 0)
+    {
+        node->dir = rotacaoDir(node->dir);
+        return rotacaoEsq(node);
+    }
+
+    // Retorna sem alterações caso árvore esteja balanceada
     return node;
 }
 
 Arvore *excluir(Arvore *node, char nome[])
 {
-    Arvore *tempNode = NULL;
-
     if (node == NULL) // definição de parada da recursão
     {
         return node;
@@ -106,55 +116,79 @@ Arvore *excluir(Arvore *node, char nome[])
     if (strcasecmp(nome, node->nome) < 0) // Verifica se o nome é menor que o nó atual e procura a esquerda da árvore
     {
         node->esq = excluir(node->esq, nome);
-
-        return node;
     }
-
-    if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome é maior que o nó atual e procura a direita da árvore
+    else if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome é maior que o nó atual e procura a direita da árvore
     {
         node->dir = excluir(node->dir, nome);
-
-        return node;
     }
-
-    // Se não é maior, menor ou nulo, então encontramos o nó a ser excluído
-
-    if (node->esq == NULL && node->dir == NULL) // Esse nó é folha? Se sim, simplesmente remove o nó
+    else // Se não é maior, menor ou nulo, então encontramos o nó a ser excluído
     {
-        free(node);
-        node = NULL;
 
-        return node;
-    }
-
-    if (node->esq == NULL || node->dir == NULL) // Se o nó só tem um filho, substitue a posição do filho naquele nó
-    {
-        if (node->esq == NULL)
+        if (node->esq == NULL && node->dir == NULL) // Esse nó é folha? Se sim, simplesmente remove o nó
         {
-            tempNode = node->dir;
+            free(node);
+            node = NULL;
+        }
+        else if (node->esq == NULL || node->dir == NULL) // Se o nó só tem um filho, substitue a posição do filho naquele nó
+        {
+            Arvore *tempNode = node->esq ? node->esq : node->dir;
+            *node = *tempNode;
+
+            free(tempNode);
         }
         else
         {
-            tempNode = node->esq;
+            // Nó tem dois filhos: subsitue pelo proximo nó na ordem (menor nó a direita da árvore)
+            Arvore *tempNode = menorNode(node->dir);
+
+            // Substitui os valores do node removido pelo menor nó
+            strcpy(node->nome, tempNode->nome);
+            strcpy(node->email, tempNode->email);
+            strcpy(node->instituicao, tempNode->instituicao);
+            node->publicacoes = tempNode->publicacoes;
+
+            // Remove o proximo nó na ordem (que está duplicado)
+            node->dir = excluir(node->dir, tempNode->nome);
         }
-
-        free(node);
-        node = NULL;
-
-        return tempNode;
     }
 
-    // Nó tem dois filhos: subsitue pelo proximo nó na ordem (menor nó a direita da árvore)
-    tempNode = menorNode(node->dir);
+    if (node == NULL) // caso o último elemento da arvore tenha sido removido
+    {
+        return node;
+    }
 
-    // Substitui os valores do node removido pelo menor nó
-    strcpy(node->nome, tempNode->nome);
-    strcpy(node->email, tempNode->email);
-    strcpy(node->instituicao, tempNode->instituicao);
-    node->publicacoes = tempNode->publicacoes;
+    // atualiza a altura do nó
+    node->altura = maior(altura(node->esq), altura(node->dir)) + 1;
 
-    // Remove o proximo nó na ordem (que está duplicado)
-    node->dir = excluir(node->dir, tempNode->nome);
+    // determina o fator de balanceamento do nó
+    int balance = fatorBalanceamento(node);
+
+    // Rebalanceia a árvore caso necessário
+    // Esquerda Esquerda
+    if (balance > 1 && fatorBalanceamento(node->esq) >= 0)
+    {
+        return rotacaoDir(node);
+    }
+
+    // Esquerda Direita
+    if (balance > 1 && fatorBalanceamento(node->esq) < 0)
+    {
+        node->esq = rotacaoEsq(node->esq);
+        return rotacaoDir(node);
+    }
+
+    // Direita Direita
+    if (balance < -1 && fatorBalanceamento(node->dir) >= 0)
+    {
+        return rotacaoEsq(node);
+    }
+
+    // Direita Esquerda
+    if (balance < -1 && fatorBalanceamento(node->dir) < 0)
+    {
+        node->dir = rotacaoDir(node->dir);
+        return rotacaoEsq(node);
+    }
 
     return node;
 }
@@ -241,7 +275,7 @@ int altura(Arvore *node)
         return 0;
     }
 
-    return node->altura;    
+    return node->altura;
 }
 
 int maior(int x, int y)
@@ -251,43 +285,44 @@ int maior(int x, int y)
 
 int fatorBalanceamento(Arvore *node)
 {
+    if (node == NULL)
+    {
+        return 0;
+    }
+
     return altura(node->esq) - altura(node->dir);
 }
 
-void rotacaoEsq(Arvore *root)
+Arvore *rotacaoEsq(Arvore *node)
 {
-    Arvore *node = root->esq;
-    root->esq = node->dir;
-    node->dir = root;
+    Arvore *x = node->esq;
+    Arvore *T2 = x->dir;
 
-    root->altura = maior(altura(root->esq), altura(root->dir)) + 1;
-    node->altura = maior(altura(node->esq), root->altura) + 1;
+    // faz a rotação para a esquerda
+    x->esq = node;
+    node->dir = T2;
 
-    root = node;
+    node->altura = maior(altura(node->esq), altura(node->dir)) + 1;
+    x->altura = maior(altura(x->esq), altura(x->dir)) + 1;
+
+    // retorna a nova raiz
+    return x;
 }
 
-void rotacaoDir(Arvore *root)
+Arvore *rotacaoDir(Arvore *node)
 {
-    Arvore *node = root->dir;
-    root->dir = node->esq;
-    node->esq = root;
+    Arvore *x = node->esq;
+    Arvore *T2 = x->dir;
 
-    root->altura = maior(altura(root->esq), altura(root->dir)) + 1;
-    node->altura = maior(altura(node->dir), root->altura) + 1;
+    // faz a rotação para a direita
+    x->dir = node;
+    node->esq = T2;
 
-    root = node;
-}
+    node->altura = maior(altura(node->esq), altura(node->dir)) + 1;
+    x->altura = maior(altura(x->esq), altura(x->dir)) + 1;
 
-void rotacaoEsqDir(Arvore *root)
-{
-    rotacaoDir(root->esq);
-    rotacaoEsq(root);
-}
-
-void rotacaoDirEsq(Arvore *root)
-{
-    rotacaoEsq(root->dir);
-    rotacaoDir(root);
+    // retorna a nova raiz
+    return x;
 }
 
 Arvore *procuraMenor(Arvore *nodeAtual)
