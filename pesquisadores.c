@@ -235,6 +235,7 @@ struct pesquisador *criar(char nome[], char email[], char instituicao[], Lista *
     strcpy(temp->email, email);
     strcpy(temp->instituicao, instituicao);
     temp->publicacoes = publicacoes;
+    temp->altura = 1;
 
     temp->esq = NULL;
     temp->dir = NULL;
