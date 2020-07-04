@@ -48,7 +48,7 @@ int main()
     inserir(raiz, "Flávio Mendes", "fm@ufrj.br", "UFRJ", publicacoesFlavio);
     inserir(raiz, "Odair Siqueira", "odair@din.uem.br", "UEM", publicacoesOdair);
 
-    while (acao != 6)
+    while (acao != 7)
     {
         menu(&acao);
         switch (acao)
@@ -107,6 +107,12 @@ int main()
             listarEmOrdem(raiz);
 
             break;
+
+        case 6:
+            printf("\nSEQUENCIA ARMAZENADA NA ÁRVORE");
+            listar(raiz);
+
+            break;
         }
     }
 }
@@ -114,12 +120,13 @@ int main()
 void menu(int *acao)
 {
     printf("\nCADASTRO DE PESQUISADORES\n");
-    printf("1 - Inserir\n");
-    printf("2 - Pesquisar\n");
-    printf("3 - Alterar \n");
-    printf("4 - Excluir\n");
-    printf("5 - Listar\n");
-    printf("6 - Sair do programa\n");
+    printf("1 - Inserção de novos pesquisadores na rede\n");
+    printf("2 - Consulta de pesquisador da rede\n");
+    printf("3 - Alteração dos dados de pesquisador da rede\n");
+    printf("4 - Remoção de pesquisadores da rede\n");
+    printf("5 - Listar os pesquisadores da rede em ordem\n");
+    printf("6 - Exibir sequencia armazenada na árvore\n");
+    printf("7 - Sair do programa\n");
 
     printf("\nDigite uma opção: ");
     scanf("%d", acao);
