@@ -109,7 +109,7 @@ int main()
             break;
 
         case 6:
-            printf("\nSEQUENCIA ARMAZENADA NA ÁRVORE");
+            printf("\nSEQUÊNCIA ARMAZENADA NA ÁRVORE");
             listar(raiz);
 
             break;
@@ -125,7 +125,7 @@ void menu(int *acao)
     printf("3 - Alteração dos dados de pesquisador da rede\n");
     printf("4 - Remoção de pesquisadores da rede\n");
     printf("5 - Listar os pesquisadores da rede em ordem\n");
-    printf("6 - Exibir sequencia armazenada na árvore\n");
+    printf("6 - Exibir a sequência armazenada na árvore\n");
     printf("7 - Sair do programa\n");
 
     printf("\nDigite uma opção: ");
