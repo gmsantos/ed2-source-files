@@ -15,6 +15,7 @@ Vanessa Paula Alves de Moura       RA: 580643
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <locale.h>
 
 #include "pesquisadores.c"
 #include "publicacoes.c"
@@ -32,9 +33,11 @@ void ler_editora(char editora[]);
 
 int main()
 {
-    int acao;
+    int acao = 0;
     char nome[90], email[60], instituicao[50];
     Lista *publicacoes;
+
+    setlocale(LC_ALL, "pt_BR");
 
     printf("Inserindo pesquisadores iniciais na rede...\n");
     Arvore *raiz = NULL;
@@ -190,11 +193,11 @@ Lista *ler_publicacoes()
     // aceita os inputs de S ou N para inserir mais publicações ou prosseguir
     do
     {
-        printf("\nDeseja incluir uma nova publicação para esse pesquisador? ([S]Sim/[N]Não) : ");
+        printf("\nDeseja incluir uma nova publicação para esse pesquisador? ([S]im/[N]ão) : ");
         scanf("%s", confirma);
         getchar();
 
-        if (strcasecmp(confirma, "s") == 0) // Lê os dados da publicação
+        if (strcmp(confirma, "s") == 0) // Lê os dados da publicação
         {
             ler_titulo(titulo);
             ler_ano(&ano);
@@ -215,7 +218,7 @@ Lista *ler_publicacoes()
                 anterior = nova;
             }
         }
-    } while (strcasecmp(confirma, "n") != 0); // Se mantem no se input for diferente de N
+    } while (strcmp(confirma, "n") != 0); // Se mantem no se input for diferente de N
 
     return lista; // O primeiro elemento da lista ligada ou NULL Ã© retornado
 }

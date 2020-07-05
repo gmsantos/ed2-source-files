@@ -34,15 +34,17 @@ Arvore *busca(Arvore *node, char nome[])
         return node;
     }
 
-    if (strcasecmp(nome, node->nome) < 0)
+    if (stricmp(nome, node->nome) < 0)
     {
         return busca(node->esq, nome);
     }
 
-    if (strcasecmp(nome, node->nome) > 0)
+    if (stricmp(nome, node->nome) > 0)
     {
         return busca(node->dir, nome);
     }
+
+    return node;
 }
 
 Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lista *publicacoes)
@@ -52,17 +54,17 @@ Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lis
         return criar(nome, email, instituicao, publicacoes);
     }
 
-    if (strcasecmp(nome, node->nome) < 0)
+    if (stricmp(nome, node->nome) < 0)
     {
         node->esq = inserir(node->esq, nome, email, instituicao, publicacoes);
     }
 
-    if (strcasecmp(nome, node->nome) > 0)
+    if (stricmp(nome, node->nome) > 0)
     {
         node->dir = inserir(node->dir, nome, email, instituicao, publicacoes);
     }
 
-    if (strcasecmp(nome, node->nome) == 0)
+    if (stricmp(nome, node->nome) == 0)
     {
         printf("\n > Esse pesquisador já existe na rede. Nenhuma alteração foi efetuada.");
 
@@ -77,26 +79,26 @@ Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lis
 
     // Rebalanceia a árvore caso necessário
     // Esquerda Esquerda
-    if (balance > 1 && strcasecmp(nome, node->esq->nome) < 0)
+    if (balance > 1 && stricmp(nome, node->esq->nome) < 0)
     {
         return rotacaoDir(node);
     }
 
     // Direita Direita
-    if (balance < -1 && strcasecmp(nome, node->dir->nome) > 0)
+    if (balance < -1 && stricmp(nome, node->dir->nome) > 0)
     {
         return rotacaoEsq(node);
     }
 
     // Esquerda Direita
-    if (balance > 1 && strcasecmp(nome, node->esq->nome) > 0)
+    if (balance > 1 && stricmp(nome, node->esq->nome) > 0)
     {
         node->esq = rotacaoEsq(node->esq);
         return rotacaoDir(node);
     }
 
     // Direita Esquerda
-    if (balance < -1 && strcasecmp(nome, node->dir->nome) < 0)
+    if (balance < -1 && stricmp(nome, node->dir->nome) < 0)
     {
         node->dir = rotacaoDir(node->dir);
         return rotacaoEsq(node);
@@ -113,11 +115,11 @@ Arvore *excluir(Arvore *node, char nome[])
         return node;
     }
 
-    if (strcasecmp(nome, node->nome) < 0) // Verifica se o nome é menor que o nó atual e procura a esquerda da árvore
+    if (stricmp(nome, node->nome) < 0) // Verifica se o nome é menor que o nó atual e procura a esquerda da árvore
     {
         node->esq = excluir(node->esq, nome);
     }
-    else if (strcasecmp(nome, node->nome) > 0) // Verifica se o nome é maior que o nó atual e procura a direita da árvore
+    else if (stricmp(nome, node->nome) > 0) // Verifica se o nome é maior que o nó atual e procura a direita da árvore
     {
         node->dir = excluir(node->dir, nome);
     }
