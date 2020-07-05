@@ -58,13 +58,11 @@ Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lis
     {
         node->esq = inserir(node->esq, nome, email, instituicao, publicacoes);
     }
-
-    if (stricmp(nome, node->nome) > 0)
+    else if (stricmp(nome, node->nome) > 0)
     {
         node->dir = inserir(node->dir, nome, email, instituicao, publicacoes);
     }
-
-    if (stricmp(nome, node->nome) == 0)
+    else
     {
         printf("\n > Esse pesquisador já existe na rede. Nenhuma alteração foi efetuada.");
 
@@ -125,7 +123,6 @@ Arvore *excluir(Arvore *node, char nome[])
     }
     else // Se não é maior, menor ou nulo, então encontramos o nó a ser excluído
     {
-
         if (node->esq == NULL && node->dir == NULL) // Esse nó é folha? Se sim, simplesmente remove o nó
         {
             free(node);
@@ -298,32 +295,32 @@ int fatorBalanceamento(Arvore *node)
     return altura(node->esq) - altura(node->dir);
 }
 
-Arvore *rotacaoEsq(Arvore *node)
+Arvore *rotacaoEsq(Arvore *x)
 {
-    Arvore *x = node->esq;
-    Arvore *T2 = x->dir;
+    Arvore *y = x->dir;
+    Arvore *T2 = y->esq;
 
     // faz a rotação para a esquerda
-    x->esq = node;
-    node->dir = T2;
+    y->esq = x;
+    x->dir = T2;
 
-    node->altura = maior(altura(node->esq), altura(node->dir)) + 1;
     x->altura = maior(altura(x->esq), altura(x->dir)) + 1;
+    y->altura = maior(altura(y->esq), altura(y->dir)) + 1;
 
     // retorna a nova raiz
-    return x;
+    return y;
 }
 
-Arvore *rotacaoDir(Arvore *node)
+Arvore *rotacaoDir(Arvore *y)
 {
-    Arvore *x = node->esq;
+    Arvore *x = y->esq;
     Arvore *T2 = x->dir;
 
     // faz a rotação para a direita
-    x->dir = node;
-    node->esq = T2;
+    x->dir = y;
+    y->esq = T2;
 
-    node->altura = maior(altura(node->esq), altura(node->dir)) + 1;
+    y->altura = maior(altura(y->esq), altura(y->dir)) + 1;
     x->altura = maior(altura(x->esq), altura(x->dir)) + 1;
 
     // retorna a nova raiz

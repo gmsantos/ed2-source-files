@@ -51,8 +51,8 @@ int main()
 
     // Cria a raiz da Árvore
     raiz = inserir(raiz, "Marcos Teixeira", "teixeira@gmail.com", "UFSCar", publicacoesMarcos);
-    inserir(raiz, "Flávio Mendes", "fm@ufrj.br", "UFRJ", publicacoesFlavio);
-    inserir(raiz, "Odair Siqueira", "odair@din.uem.br", "UEM", publicacoesOdair);
+    raiz = inserir(raiz, "Flávio Mendes", "fm@ufrj.br", "UFRJ", publicacoesFlavio);
+    raiz = inserir(raiz, "Odair Siqueira", "odair@din.uem.br", "UEM", publicacoesOdair);
 
     while (acao != 7)
     {
@@ -72,7 +72,7 @@ int main()
             }
             else
             {
-                inserir(raiz, nome, email, instituicao, publicacoes);
+                raiz = inserir(raiz, nome, email, instituicao, publicacoes);
             }
 
             break;
@@ -156,7 +156,7 @@ void ler_email(char email[])
 
 void ler_instituicao(char instituicao[])
 {
-    printf("Digite a instituiçãoo: ");
+    printf("Digite a instituição: ");
     fgets(instituicao, 50, stdin);
     instituicao[strcspn(instituicao, "\r\n")] = 0;
 }
