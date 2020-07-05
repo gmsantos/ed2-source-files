@@ -218,14 +218,16 @@ void listarEmOrdem(Arvore *raiz)
     }
 }
 
-void listar(Arvore *raiz)
+void listarParenteses(Arvore *raiz)
 {
+    printf("(");
     if (raiz != NULL)
     {
-        exibirPesquisador(raiz);
-        listarEmOrdem(raiz->esq);
-        listarEmOrdem(raiz->dir);
+        printf("[%s]", raiz->nome);
+        listarParenteses(raiz->esq);
+        listarParenteses(raiz->dir);
     }
+    printf(")");
 }
 
 struct pesquisador *criar(char nome[], char email[], char instituicao[], Lista *publicacoes)

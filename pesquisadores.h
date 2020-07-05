@@ -19,7 +19,7 @@ Arvore *busca(Arvore *node, char nome[]);
 Arvore *inserir(Arvore *node, char nome[], char email[], char instituicao[], Lista *publicacoes);
 void alterarPesquisador(struct pesquisador *pesquisador, char email[], char instituicao[]);
 Arvore *excluir(Arvore *node, char nome[]);
-void listar(Arvore *raiz);
+void listarParenteses(Arvore *raiz);
 void listarEmOrdem(Arvore *node);
 
 #endif
