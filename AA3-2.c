@@ -1,7 +1,10 @@
 /*
-AA3.2 - Atividade em grupo: Trabalho Prático - Parte 1
-Elaboração de um aplicativo que disponibiliza as funcionalidades de uma rede de colaboração de pesquisadores. Os dados dos
-pesquisadores da rede devem ser armazenados em memória utilizando uma árvore binária de busca (ABB)
+AA4.2 - Atividade em grupo: Trabalho Prático - Parte 2
+Este trabalho pratico dá continuidade ao trabalho realizado na unidade anterior(Unidade 3). 
+Para realiza-lo com sucesso, deve-se criar uma nova versao do aplicativo que disponibiliza 
+as funcionalidades de uma rede de colaboração de pesquisadores. 
+Essa nova versão deverá utilizar uma ?arvore AVL (árvore binária de busca balanceada) 
+para armazenar os pesquisadores da rede.
 
 Integrantes:
 Gabriel Machado Santos             RA: 581062
